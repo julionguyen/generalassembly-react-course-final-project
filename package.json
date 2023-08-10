@@ -8,6 +8,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/base": "^5.0.0-beta.9",
     "@mui/icons-material": "^5.14.3",
+    "@mui/joy": "^5.0.0-beta.1",
     "@mui/material": "^5.14.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",

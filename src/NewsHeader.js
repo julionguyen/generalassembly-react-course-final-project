@@ -5,26 +5,38 @@ import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Menu } from "@
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import SearchIcon from '@mui/icons-material/Search';
+
 import { useState } from "react";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { Link, Navigate } from "react-router-dom";
 
 export default function NewsHeader({countryCode}) {    
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [menu, setMenu] = useState(null)
+  const [searchText, setSearchText] = useState()
+  
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    
+    setAnchorEl(event.currentTarget);    
   };
   
-  const handleClose = () => {
+  const handleClose = () => {        
     setAnchorEl(null);
   };
 
+  const handleMenuClick = (event, item) => {
+    console.log('you selected menu item: ',item)    
+    setAnchorEl(null);
+  }
+  
+  const handleSearchTextChange = (event) => {
+    setSearchText(event.target.value)
+  }
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -70,15 +82,13 @@ export default function NewsHeader({countryCode}) {
   return (            
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-        
+        <Toolbar>        
         <Menu
           anchorEl={anchorEl}
           id="categary-menu"
           open={open}
           onClose={handleClose}
-          onClick={handleClose}
-          color="primary"
+          onClick={handleClose}          
           slotProps={{
             elevation: 0,
             sx: {
@@ -103,16 +113,24 @@ export default function NewsHeader({countryCode}) {
                 transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 0,
               },
-            },
+            }            
           }}
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-        <MenuItem onClick={handleClose} color="primary">
+        <MenuItem 
+            component={Link}
+            to='/'
+            onClick={event => handleMenuClick(event,"/home")}>
           HOME
         </MenuItem>
         {newsCategories.map((newsCategoryItem, index)=> 
-          <MenuItem onClick={handleClose} color="primary" key={index}>
+          <MenuItem 
+            key={index}
+            component={Link}
+            to={`/${newsCategoryItem}`}
+            onClick={event => handleMenuClick(event, `${newsCategoryItem}`)}
+            >
             {newsCategoryItem.toLocaleUpperCase()}
           </MenuItem>
         )}
@@ -143,6 +161,8 @@ export default function NewsHeader({countryCode}) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              value={searchText}
+              onChange={(event)=> setSearchText(event.target.value)}
             />
           </Search>
         </Toolbar>
