@@ -19,7 +19,7 @@ Due to the limitation of FREE ACCOUNT. The App only works the latest news. The l
 ![Home page](/screenshots/Screenshot_2023-08-10_192813.jpg)
 ![News Details](/screenshots/Screenshot_2023-08-10_193448.jpg)
 ![News in Category](/screenshots/Screenshot_2023-08-10_193534.jpg)
-![News in Category](/screenshots/Screenshot_2023-08-10_193534.jpg)
+![News in Category](/screenshots/Screenshot_2023-08-10_193555.jpg)
 ![Loading Button to load more news](/screenshots/Screenshot_2023-08-10_193721.jpg)
 
 
