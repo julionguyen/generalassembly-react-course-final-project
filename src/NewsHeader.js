@@ -1,25 +1,68 @@
-import "./NewsHeader.css"
-import { newsCategories } from "./PredefinedConst"
-import { styled, alpha } from '@mui/material/styles';
-import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Menu } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import SearchIcon from '@mui/icons-material/Search';
-
-import { useState } from "react";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Link, Navigate } from "react-router-dom";
+import "./NewsHeader.css"
+import { newsCategories } from "./PredefinedConst"
+import { styled, alpha } from '@mui/material/styles';
+import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Menu, Avatar, MenuItem } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import { useEffect, useState } from "react";
+import { useNavigate, Outlet, useParams } from "react-router-dom";
 
-export default function NewsHeader({countryCode}) {    
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  }
+}))
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',    
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
+
+
+export default function NewsHeader({countryFlag}) {    
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const [menu, setMenu] = useState(null)
-  const [searchText, setSearchText] = useState()
+  const open = Boolean(anchorEl);  
+  const [searchText, setSearchText] = useState('')
   
+  let navigate = useNavigate()
+
+  let params = useParams()
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);    
@@ -29,58 +72,54 @@ export default function NewsHeader({countryCode}) {
     setAnchorEl(null);
   };
 
-  const handleMenuClick = (event, item) => {
-    console.log('you selected menu item: ',item)    
+  const handleMenuClick = (event, item) => {    
     setAnchorEl(null);
+    setSearchText('')
+    if (item === "home") {
+      navigate(`/`)
+    } else {
+      navigate(`/${item}`)
+    }      
   }
   
-  const handleSearchTextChange = (event) => {
+  const handleSearchTextKeyDown = (event) => {
+    
+    if (event.key === 'Enter') {            
+      if (event.target.value !== "") {
+        navigate('/search/'+event.target.value)
+      }
+    }
+  }
+
+  const handleSearchTextChange = (event) => {    
     setSearchText(event.target.value)
   }
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
+
+  const handleSearchTextOnBlur = (event) => {
+    
+    if (event.target.value !== "") {
+      setSearchText(event.target.value)
+      navigate(`/search/${event.target.value}`)
     }
-  }))
 
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
-    },
-  }));
-
+  }
+  const handleFlagIconClick = () => {
+    setSearchText('')
+    navigate('/')
+    return true
+  }
+  useEffect(()=>{
+    
+    if (params?.searchText) {
+      setSearchText(params?.searchText)      
+    }
+    if (params?.category) {
+      setSearchText(params?.searchText)
+    }
+  },[])
+  
   return (            
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }}>      
       <AppBar position="static">
         <Toolbar>        
         <Menu
@@ -119,16 +158,12 @@ export default function NewsHeader({countryCode}) {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
         <MenuItem 
-            component={Link}
-            to='/'
-            onClick={event => handleMenuClick(event,"/home")}>
+            onClick={event => handleMenuClick(event,"home")}>
           HOME
         </MenuItem>
         {newsCategories.map((newsCategoryItem, index)=> 
           <MenuItem 
             key={index}
-            component={Link}
-            to={`/${newsCategoryItem}`}
             onClick={event => handleMenuClick(event, `${newsCategoryItem}`)}
             >
             {newsCategoryItem.toLocaleUpperCase()}
@@ -143,47 +178,45 @@ export default function NewsHeader({countryCode}) {
           onClick={handleClick}
           sx={{ mr: 2 }}
         >
-          <MenuIcon />
-        </IconButton>          
-          <Typography
-            variant="h4"
-            noWrap
-            component="div"
-            fontFamily="Poppins"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
+          <MenuIcon />          
+        </IconButton>
+        <IconButton onClick={handleFlagIconClick} aria-label="home icon">
+          <Avatar 
+              alt={countryFlag?.emoji} 
+              src={countryFlag?.svg} 
+              variant='rounded'            
+              sx={{ width: 40, minWidth: "30", height: "auto"}}
+          />        
+        </IconButton>
+        <Typography
+          variant="h4"
+          noWrap
+          component="div"
+          fontFamily="Poppins"
+          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+        >
           JSX Express
-          </Typography>
+        </Typography>
+        <Box>
           <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
+            <SearchIconWrapper >
+              <IconButton>
+                <SearchIcon sx={{color: "white"}} />
+              </IconButton>              
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              value={searchText}
-              onChange={(event)=> setSearchText(event.target.value)}
+              inputProps={{ 'aria-label': 'search' }}    
+              value={searchText}          
+              onKeyDownCapture={handleSearchTextKeyDown}
+              onChange={handleSearchTextChange}
+              onBlur={handleSearchTextOnBlur}
             />
           </Search>
+        </Box>
         </Toolbar>
       </AppBar>
-      </Box>
+      <Outlet />
+      </Box>      
   );
 }
-
-/*
-      <div className="navbar">
-        <div className="logo">{countryCode && <img src={`https://flagcdn.com/120x90/${countryCode}.png`} alt="" />}<Link to="/">J Xpress&#8482;</Link></div>
-        <div className="nav-links">
-          <ul className="links">
-            <li><Link to={`/${countryCode}`}>Home</Link></li>
-              {newsCategories.map((newsCategory, index)=> {
-                return (<li key={index}><Link to={`/${countryCode}/${newsCategory}`}>{newsCategory}</Link></li>)
-              })}
-              <li><Link to="/"><i className='bx bx-search'></i></Link></li>
-          </ul>
-          
-        </div>
-      </div>      
-
-*/
