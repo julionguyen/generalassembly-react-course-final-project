@@ -15,7 +15,7 @@ import { newsCountries } from './PredefinedConst';
 /* APIs used:
   https://ipgeolocation.abstractapi.com/v1/
   https://newsdata.io/
-
+  Author: Julio NGUYEN
 */ 
 
 function App() {
