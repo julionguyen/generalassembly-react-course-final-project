@@ -1,7 +1,13 @@
-import "./NotFoundPage.css"
+import "./ErrorPage.css"
+import { useNavigate } from "react-router-dom"
 import {Box, Paper, Button, Typography} from '@mui/material'
 
-export default function NotFoundPage() {
+export default function ErrorPage({errorCode, errorMessage}) {
+    let navigate = useNavigate()
+    
+    const handleHomeClick = () => {
+        navigate("/")
+    }
     return (
         <Box
             sx={{
@@ -22,12 +28,12 @@ export default function NotFoundPage() {
         >
             <Paper elevation={3} square>
                 <Typography variant="h1">
-                    404
+                    {errorCode ? errorCode : "404"}
                 </Typography>
-                <Typography variant="h6">
-                        The page you’re looking for doesn’t exist.
+                <Typography variant="h6" padding={1}>
+                        {errorMessage ? errorMessage : "The page you’re looking for doesn’t exist."}
                 </Typography>
-                <Button variant="contained">Back Home</Button>            
+                <Button variant="contained" onClick={handleHomeClick}>Back Home</Button>            
             </Paper>
         </Box>
     )

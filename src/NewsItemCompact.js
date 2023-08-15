@@ -1,37 +1,45 @@
-import { CardHeader, Grid } from "@mui/material"
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { CardHeader, Grid, Button, Box, Card, CardContent, CardActions, Divider } from "@mui/material"
+import { AspectRatio } from "@mui/joy"
 import CardMedia from '@mui/material/CardMedia';
-import { CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import ImageIcon from '@mui/icons-material/Image'
 import { Link as RouterLink} from 'react-router-dom'
 
 export default function NewsItemCompact({newsItem}) {
     return(
         <>
-            <Grid item xs>
-            <Card sx={{ minWidth: 375, minHeight: 280}}>
-                <CardActionArea component={RouterLink} to={`/news/${newsItem.title}`}>
-                    <CardHeader 
-                        align="justify"
-                        title={newsItem.title}
-                        subheader={newsItem.pubDate}
-                    />
-                </CardActionArea>
-                    { newsItem?.image_url &&
-                    <CardMedia
-                        component="img"                            
-                        src={newsItem?.image_url}
-                        sx={{ maxWidth: 457}}
-                        alt={newsItem?.title}
-                    />}
-                    <CardContent>
-                    <Typography variant="body2" align="justify" color="text.secondary">
-                        {newsItem.description}
-                    </Typography>    
-                    <Typography variant="subtitle2" align="right" color="text.secondary">
-                        {newsItem?.creator && `Credit: ${newsItem?.creator} |`} { newsItem?.source_id && <>Source: 
+            <Card sx={{ maxWidth: 345 }}>
+            <Box sx={{ position: 'relative' }}>
+                <CardMedia
+                component="img"
+                height="200"
+                image={ newsItem?.image_url ? newsItem?.image_url : "/no_image.jpg"}
+                alt={newsItem?.title}
+                />
+                <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                    bgcolor: 'rgba(0, 0, 0, 0.54)',
+                    color: 'white',
+                    padding: '10px',
+                }}
+                >
+                    <Link component={RouterLink} to={`/news/${newsItem.title}`} underline="none" color={"white"}>
+                        <Typography variant="subtitle" height={2}>{newsItem?.title}</Typography>                
+                    </Link> 
+                </Box>
+            </Box>
+            <CardContent align="justify">
+                <Typography variant="body2" color="text.secondary">
+                    {newsItem?.description && `${newsItem?.description.slice(0,300)}...`}
+                </Typography>
+                <Divider />
+                <Typography variant="subtitle2" align="right" color="text.secondary">
+                        {newsItem?.creator && `Credit: ${newsItem?.creator} |`} { newsItem?.source_id && <>Source: &nbsp;
                                 <Link 
                                     href={newsItem?.link} 
                                     underline="none"
@@ -39,9 +47,10 @@ export default function NewsItemCompact({newsItem}) {
                                     rel="noopenner"
                                 >{newsItem.source_id}</Link></>}
                     </Typography>
-                    </CardContent>                            
-                </Card>                
-            </Grid>
+
+            </CardContent>            
+                
+            </Card>
         </>
     )
 }

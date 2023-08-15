@@ -126,14 +126,15 @@ export default function NewsSearchPage({userCountryCode}) {
                     <Typography variant="body2" gutterBottom align="justify">
                         {newsItem.description}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" textAlign={'right'}>
                         {newsItem.category && <>Category: {newsItem?.category.map((categoryItem) => categoryItem)} | </>}
-                        {newsItem?.creator && `Credit: ${newsItem?.creator} |`} {newsItem?.source_id && <>Source: <Link 
-                                                            href={newsItem?.link} 
-                                                            underline="none"
-                                                            target="_blank"
-                                                            rel="noopenner"
-                                                        >{newsItem?.source_id}</Link></>}
+                        {newsItem?.creator && `Credit: ${newsItem?.creator} |`} {newsItem?.source_id && <>Source:&nbsp;
+                            <Link 
+                                href={newsItem?.link} 
+                                underline="none"
+                                target="_blank"
+                                rel="noopenner"
+                            >{newsItem?.source_id}</Link></>}
                     </Typography>
                 </Grid>                                
             </Grid>            

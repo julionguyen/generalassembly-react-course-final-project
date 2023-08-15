@@ -8,6 +8,7 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import Button  from "@mui/material/Button";
 import { useParams } from "react-router-dom";
 import NewsItemCompact from './NewsItemCompact';
+import ErrorPage from './ErrorPage';
 
 export default function LatestNewsList({userCountryCode}) {    
 
@@ -40,7 +41,8 @@ export default function LatestNewsList({userCountryCode}) {
                 }
 
                 userCountryCode && await fetch('https://newsdata.io/api/1/news?'+ fetchParams
-                ).then(res => {                    
+                ).then(res => {
+                    console.log('Error: ',res)
                     if (res.ok) {
                         res.json()
                         .then(res => {                            
@@ -60,7 +62,12 @@ export default function LatestNewsList({userCountryCode}) {
             }
         } catch (error) {
             console.log('Catch Error: ', error.message)
-            setErrorMessage(error.message)
+            if (category) { 
+                setErrorMessage(`${error.message} ${category}`)
+            } else {
+                setErrorMessage(error.message)
+            }
+            setProgress(100)
         }
     }
 
@@ -76,20 +83,30 @@ export default function LatestNewsList({userCountryCode}) {
         }        
         fetchLatestNews(params?.category)
         return () => {
-            // For Dismount
+            setErrorMessage("")
         }
     },[params])
     
     return (
-        <>            
+        <>               
             <Grid container 
                     spacing={4} 
-                    padding={2} 
-                    className="news_item"                    
-            >
-                {newsList?.map((newsItem,index) =>
-                    <NewsItemCompact newsItem={newsItem} key={index}/>
-                ) }
+                    padding={5}
+                    gap={5}                    
+                    justifyContent="center"
+                    className="news_item"
+            >                
+                {newsList.length > 0 
+                    ? newsList?.map((newsItem,index) =>
+                        <NewsItemCompact newsItem={newsItem} key={index}/>                    
+                    )
+                    : <Grid item justifyContent="center">
+                        { errorMessage 
+                            ? <ErrorPage errorCode={422} errorMessage={errorMessage} />
+                            : newsCategory !== undefined && <ErrorPage errorCode={0} errorMessage={`Ops, the topic ${newsCategory} is empty`} />
+                        }
+                    </Grid>
+                }
             </Grid>
             {nextPage && <Button variant="contained" onClick={handleLoadMore}>Continue...</Button>}
             <Backdrop

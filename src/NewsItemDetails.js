@@ -4,7 +4,6 @@ import Paper from "@mui/material/Paper"
 import ImageIcon from '@mui/icons-material/Image'
 import { AspectRatio } from "@mui/joy"
 import { styled } from '@mui/material/styles'
-import { Navigate, useParams } from "react-router-dom"
 
 const Img = styled('img')({
     margin: 'auto',
@@ -50,12 +49,13 @@ export default function NewsItemDetails({newsItem, errorMessage}) {
                         {newsItem?.content}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {newsItem?.creator && `Credit: ${newsItem?.creator} |`} {newsItem?.source_id && <>Source: <Link 
-                                                                href={newsItem?.link} 
-                                                                underline="none"
-                                                                target="_blank"
-                                                                rel="noopenner"
-                                                            >{newsItem?.source_id}</Link></>}
+                        {newsItem?.creator && `Credit: ${newsItem?.creator} |`} {newsItem?.source_id && <>Source:&nbsp;
+                            <Link 
+                                href={newsItem?.link} 
+                                underline="none"
+                                target="_blank"
+                                rel="noopenner"
+                            >{newsItem?.source_id}</Link></>}
                     </Typography>
                 </Grid>
             </Grid>
