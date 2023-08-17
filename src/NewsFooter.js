@@ -18,8 +18,7 @@ export default function NewsFooter() {
             <Link color="inherit" underline="none" href="https://www.linkedin.com/in/julionguyen/">
                 Julio Nguyen
             </Link>&nbsp;
-            {new Date().getFullYear()}
-            {"."}
+            2023.            
             </Typography>
             <Typography variant="body2" color="text.secondary" align="center">
                 A Final Project for React Course sponsor by &nbsp; 
@@ -30,7 +29,7 @@ export default function NewsFooter() {
             <Typography variant="body2" color="text.secondary" align="center">
                 Course Provider &nbsp;
                 <Link color="inherit" underline="none" href="https://generalassemb.ly/">
-                    Victoria Digital Proram
+                    General Assembly
                 </Link>            
             </Typography>
         </Container>
