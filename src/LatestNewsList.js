@@ -108,7 +108,7 @@ export default function LatestNewsList({userCountryCode}) {
                     </Grid>
                 }
             </Grid>
-            {nextPage && <Button variant="contained" onClick={handleLoadMore}>Continue...</Button>}
+            {nextPage && <Button variant="contained" onClick={handleLoadMore} sx={{margin: 5}}>Continue...</Button>}
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={progress < 100}

@@ -4,6 +4,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
+import NewsFooter from './NewsFooter';
 import NewsHeader from './NewsHeader';
 import ErrorPage from './ErrorPage';
 import LatestNewsList from './LatestNewsList';
@@ -70,7 +71,8 @@ function App() {
           <Route path=':category' element={<LatestNewsList userCountryCode={userCountry?.country_code}/>} />          
         </Route>
         <Route path='*' element={<ErrorPage />} />
-      </Routes>      
+      </Routes>
+      <NewsFooter />
     </nav>
   );
 }
