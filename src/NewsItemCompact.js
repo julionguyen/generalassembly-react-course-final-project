@@ -10,7 +10,7 @@ export default function NewsItemCompact({newsItem}) {
     return(
         <>
             <Card sx={{ maxWidth: 345 }}>
-            <Box sx={{ position: 'relative' }}>
+            <Box sx={{ position: 'relative'}}>
                 <CardMedia
                 component="img"
                 height="200"
@@ -34,7 +34,7 @@ export default function NewsItemCompact({newsItem}) {
                 </Box>
             </Box>
             <CardContent align="justify">
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" minHeight={120}>
                     {newsItem?.description && `${newsItem?.description.slice(0,300)}...`}
                 </Typography>
                 <Divider />

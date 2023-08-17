@@ -14,6 +14,8 @@ Limitation:
 
 Due to the limitation of FREE ACCOUNT. The App only works the latest news. The latest news would have access in only 48 hours.
 
+Demo: [JSX Express!](https://julionguyen.surge.sh)
+
 ** Screenshots can be seen on the screenshots folder.
 
 ![Home page](/screenshots/Screenshot_2023-08-10_192813.jpg)

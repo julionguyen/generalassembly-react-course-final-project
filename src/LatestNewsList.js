@@ -92,7 +92,7 @@ export default function LatestNewsList({userCountryCode}) {
             <Grid container 
                     spacing={4} 
                     padding={5}
-                    gap={5}                    
+                    gap={5}
                     justifyContent="center"
                     className="news_item"
             >                
